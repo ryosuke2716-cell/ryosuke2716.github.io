@@ -1,54 +1,5 @@
-<div class="leaderboard">
-    <div class="leaderboard-header">
-        <h1 class="title">TOP RANKING</h1>
-        <span class="subtitle">Live Leaderboard</span>
-    </div>
-
-    <div class="leaderboard-list" id="leaderboard-list">
-        <p style="color: #a0a0b8; text-align: center; padding: 20px;">Loading...</p>
-    </div>
-</div>
-
-<script>
-    // あなたのCloudflare WorkersのURLに置き換えてください
-    const WORKERS_URL = 'https://your-workers-name.your-subdomain.workers.dev/api/ranking';
-
-    async function fetchRanking() {
-        try {
-            const response = await fetch(WORKERS_URL);
-            const data = await response.json();
-            updateLeaderboard(data);
-        } catch (error) {
-            console.error('ランキングの取得に失敗しました:', error);
-        }
-    }
-
-    function updateLeaderboard(players) {
-        const listContainer = document.getElementById('leaderboard-list');
-        listContainer.innerHTML = ''; // ローディング表示をクリア
-
-        players.forEach((player, index) => {
-            const rank = index + 1;
-            // 3位以内なら個別のクラスを付与
-            const rankClass = rank <= 3 ? `rank-${rank}` : '';
-            
-            const itemHtml = `
-                <div class="rank-item ${rankClass}">
-                    <div class="rank-badge">${rank}</div>
-                    <div class="player-info">
-                        <div class="player-name">${player.name}</div>
-                        <div class="player-status">${player.status || 'Active'}</div>
-                    </div>
-                    <div class="player-score">${Number(player.score).toLocaleString()}</div>
-                </div>
-            `;
-            listContainer.insertAdjacentHTML('beforeend', itemHtml);
-        });
-    }
-
-    // 初回読み込み
-    fetchRanking();
-
-    // 5秒ごとにリアルタイム（ポーリング）更新
-    setInterval(fetchRanking, 5000);
-</script>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
